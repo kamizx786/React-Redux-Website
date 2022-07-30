@@ -1,22 +1,17 @@
 import React, { useEffect } from 'react'
 import './detail.css'
-import axios from "axios";
 import { useDispatch } from 'react-redux/es/exports';
 import {useLocation} from "react-router-dom"
-import { selectProducts,removeselectProducts} from '../redux/actions/productactions';
+import { fetchProductsById,removeselectProducts} from '../redux/actions/productactions';
 import { useSelector } from 'react-redux/es/hooks/useSelector';
 const ProductDetail = () => {
 const ProductDetail=useSelector((state)=>state.products);
 const location=useLocation();
 const {id}=location.state;
 const dispatch=useDispatch();
-const fetchdata=async()=>{
-  const response =await axios.get(`https://fakestoreapi.com/products/${id}`)
-  dispatch(selectProducts(response.data));
-}
-useEffect(()=>{
-if(id!=="") fetchdata();
 
+useEffect(()=>{
+if(id!=="") dispatch(fetchProductsById(id));
 dispatch(removeselectProducts());
 
 },[id])
